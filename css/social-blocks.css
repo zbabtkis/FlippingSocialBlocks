@@ -1,0 +1,13 @@
+.tile-inner {
+  background: #09f;
+  border-radius: 0;
+}
+
+.flipper {
+  width: 400px;
+  height: 600px;
+  position: relative;
+}
+.mask {
+  background: #09f;
+}

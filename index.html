@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <link rel="stylesheet" href="bower_components/number-flipper/css/number-flipper.css" />
+    <link rel="stylesheet" href="css/social-blocks.css" />
+  </head>
+
+  <body>
+    <div id='my-social-blocks'></div>
+
+    <script src="bower_components/number-flipper/src/helpers.js"></script>
+    <script src="bower_components/number-flipper/src/number-flipper.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="src/social-blocks.js"></script>
+    <script>
+      var Accounts = {};
+
+      // Account config
+      Accounts.INSTAGRAM = 30435276;
+
+			var sb = new SocialBlocks(
+				document.getElementById("my-social-blocks"),
+        [ SocialBlocks.Social.Instagram(Accounts.INSTAGRAM) ]
+			);
+
+      sb.run();
+    </script>
+  </body>
+
+</html>
+
