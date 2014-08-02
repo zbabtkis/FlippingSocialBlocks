@@ -19,17 +19,23 @@
   Block.prototype.getFlipper = function() {
     return this._fb;
   };
+
   var MultiBlock = function(el, social) {
+  	var _this = this;
+
     this._blocks = [];
     this.el = el;
 
     var options = {
-      cols: 13
+      cols: 7
     };
+
+    this.el.className += " sw";
 
     this._columns = MultiBlock.createColumns(options.cols);
 
     for(var i = 0, j = this._columns.length; i < j; i++) {
+    	this.el.appendChild(this._columns[i]);
       this.populateColumn(this._columns[i]);
     }
 
@@ -40,6 +46,13 @@
         els = MultiBlock.flattenData(els);
         els = MultiBlock.shuffleData(els);
 
+        while(els.length) {
+        	MultiBlock.applyData(_this._blocks, els);
+				}
+
+				for(var i = 0; i < _this._blocks.length; i ++) {
+					_this._blocks[i].flipper = new Block(_this._blocks[i].view, _this._blocks[i].model);
+				}
       });
 
     // for(var i = 0, j = arrs.length; i < j; i++) {
@@ -47,12 +60,20 @@
     // }
   };
 
+  MultiBlock.applyData = function(blocks, data) {
+		for(var i = 0, j = blocks.length; i < j; i++) {
+			if(data.length) {
+				blocks[i].model.push(data.pop());
+			}
+		}
+	};
+
   MultiBlock.flattenData = function(data, target) {
     var target = target || []; 
 
     for(var i = 0, j = data.length; i < j; i++) {
       if(data[i] instanceof Array) {
-        target.push(MultiBlock.flattenData(data[i], target));
+        MultiBlock.flattenData(data[i], target);
       } else {
         target.push(data[i]);
       }
@@ -122,20 +143,22 @@
         curHeight = 0,
         rowHeight;
 
-    while(maxHeight < curHeight) {
-      rowHeight = Math.ceil(Math.random() * maxHeight - curHeight);
+    while(maxHeight > curHeight) {
+      rowHeight = Math.ceil(Math.random() * (maxHeight - curHeight));
       curHeight += rowHeight;
 
-      this.addBlock(col, colHeight); 
+      this.addBlock(col, rowHeight); 
     }
   };
 
-  MultiBlock.prototype.addBlock = function(size) {
+  MultiBlock.prototype.addBlock = function(col, size) {
     var block = {
-      view: document.createElement('sw-block-' + size),
-      model: null,
+      view: document.createElement('div'),
+      model: [],
       region: col
     };
+
+    block.view.className = 'sw-block sw-block-' + size;
 
     this._blocks.push(block);
     col.appendChild(block.view);
@@ -150,6 +173,7 @@
     var _this = this;
     setInterval(function() {
       _this.chooseRandomBlock()
+      	.flipper
         .getFlipper()
         .flipToNext();
     }, MultiBlock.settings.FLIP_INTERVAL);
