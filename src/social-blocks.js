@@ -204,7 +204,7 @@
     },
 
     render: function (data) {
-      return "<img src='{{src}}' />".replace("{{src}}", data.images.standard_resolution.url); 
+      return "<div class='ig-image' style='background-image: url({{src}})'></div>".replace("{{src}}", data.images.standard_resolution.url); 
     },
 
     formatData: function(data, render) {
