@@ -186,11 +186,12 @@
       var URL = inst.getURL(options);
 
       function formatData(data) {
+        console.log(data);
         var rendered = inst.formatData(data, inst.render);
         $d.resolve(rendered);
       }
 
-      MultiBlock.jsonp(URL, formatData);
+      jQuery.get(URL, formatData);
 
       return $d.promise();
     };
@@ -199,7 +200,7 @@
   MultiBlock.Social.Instagram = MultiBlock.Social({
 
     getURL: function(user_id) {
-      return MultiBlock._API.INSTAGRAM.URL.replace("{{account_id}}", user_id);
+      return "/social-tiles/api/v1/instagram";
     },
 
     render: function (data) {
@@ -217,6 +218,46 @@
       return rendered;
     }
 
+  });
+
+  MultiBlock.Social.Facebook = MultiBlock.Social({
+    getURL: function(user_id) {
+      return "/social-tiles/api/v1/facebook";
+    },
+
+    render: function(data) {
+      return "<article class='facebook-post'>{{post}}</article>".replace("{{post}}", data.message);
+    },
+
+    formatData: function(data, render) {
+      var rendered = [];
+
+      for(var i = 0, j = data.length; i < j; i++) {
+        rendered.push(render(posts[i]));
+      }
+
+      return rendered;
+    }
+  });
+
+  MultiBlock.Social.Twitter = MultiBlock.Social({
+    getURL: function(user_id) {
+      return "/social-tiles/api/v1/twitter";
+    },
+
+    render: function(data) {
+      return "<article class='twitter-post'>{{post}}</article>".replace("{{post}}", data.text);
+    },
+
+    formatData: function(data, render) {
+      var rendered = [];
+
+      for(var i = 0, j = data.length; i < j; i++) {
+        rendered.push(render(data[i]));
+      }
+
+      return rendered;
+    }
   });
 
   exports.SocialBlock = Block;
