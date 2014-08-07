@@ -190,7 +190,6 @@
       var URL = inst.getURL(options);
 
       function formatData(data) {
-        console.log(data);
         var rendered = inst.formatData(data, inst.render);
         $d.resolve(rendered);
       }
