@@ -53,6 +53,8 @@
 				for(var i = 0; i < _this._blocks.length; i ++) {
 					_this._blocks[i].flipper = new Block(_this._blocks[i].view, _this._blocks[i].model);
 				}
+
+        _this.loaded = true;
       });
 
     // for(var i = 0, j = arrs.length; i < j; i++) {
@@ -139,7 +141,7 @@
   // Prototype
   //
   MultiBlock.prototype.populateColumn = function(col) {
-    var maxHeight = 4,
+    var maxHeight = 3,
         curHeight = 0,
         rowHeight;
 
@@ -172,10 +174,12 @@
   MultiBlock.prototype.run = function() {
     var _this = this;
     setInterval(function() {
-      _this.chooseRandomBlock()
-      	.flipper
-        .getFlipper()
-        .flipToNext();
+      if(_this.loaded) {
+        _this.chooseRandomBlock()
+          .flipper
+          .getFlipper()
+          .flipToNext();
+      }
     }, MultiBlock.settings.FLIP_INTERVAL);
   };
 
