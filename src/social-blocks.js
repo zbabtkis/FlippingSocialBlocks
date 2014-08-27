@@ -56,10 +56,6 @@
 
         _this.loaded = true;
       });
-
-    // for(var i = 0, j = arrs.length; i < j; i++) {
-    //   this.addBlock(new Block(null, arrs[i]));
-    // }
   };
 
   MultiBlock.applyData = function(blocks, data) {
@@ -174,11 +170,20 @@
   MultiBlock.prototype.run = function() {
     var _this = this;
     setInterval(function() {
+      var block = _this.chooseRandomBlock();
+
       if(_this.loaded) {
-        _this.chooseRandomBlock()
-          .flipper
+        block.flipper
           .getFlipper()
           .flipToNext();
+
+        _this._columns
+          .forEach(function(col) {
+            col.className = col.className.replace(/\s+animating/g, '');
+          });
+
+        // Show which column is animating
+        block.region.className += ' animating';
       }
     }, MultiBlock.settings.FLIP_INTERVAL);
   };
