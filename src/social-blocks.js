@@ -39,8 +39,20 @@
       this.populateColumn(this._columns[i]);
     }
 
-    $.when.apply($, social)
-      .then(function() {
+    // onload callbacks
+    this._waiting = [];
+
+    function flushOnLoad() {
+      for( var i = 0; i < _this._waiting.length; i++ ) {
+        _this._waiting[i].call(_this);
+        _this.loaded = true;
+      }
+
+      _this._waiting = [];
+    }
+
+    $.when.apply($, social).
+      then(function() {
         var els = [].slice.call(arguments, 0);
 
         els = MultiBlock.flattenData(els);
@@ -54,9 +66,17 @@
 					_this._blocks[i].flipper = new Block(_this._blocks[i].view, _this._blocks[i].model);
 				}
 
-        _this.loaded = true;
+        flushOnLoad();
       });
   };
+
+  MultiBlock.prototype.load = function( cb ) {
+    if(this.loaded) {
+      cb();
+    } else {
+      this._waiting.push(cb);
+    }
+  }
 
   MultiBlock.applyData = function(blocks, data) {
 		for(var i = 0, j = blocks.length; i < j; i++) {
