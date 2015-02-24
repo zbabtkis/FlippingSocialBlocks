@@ -51,20 +51,20 @@
       _this._waiting = [];
     }
 
-    $.when.apply($, social).
-      then(function() {
+    $.when.apply($, social)
+      .then(function() {
         var els = [].slice.call(arguments, 0);
 
         els = MultiBlock.flattenData(els);
         els = MultiBlock.shuffleData(els);
 
         while(els.length) {
-        	MultiBlock.applyData(_this._blocks, els);
-				}
+          MultiBlock.applyData(_this._blocks, els);
+        }
 
-				for(var i = 0; i < _this._blocks.length; i ++) {
-					_this._blocks[i].flipper = new Block(_this._blocks[i].view, _this._blocks[i].model);
-				}
+        for(var i = 0; i < _this._blocks.length; i ++) {
+          _this._blocks[i].flipper = new Block(_this._blocks[i].view, _this._blocks[i].model);
+        }
 
         flushOnLoad();
       });
@@ -79,12 +79,12 @@
   }
 
   MultiBlock.applyData = function(blocks, data) {
-		for(var i = 0, j = blocks.length; i < j; i++) {
-			if(data.length) {
-				blocks[i].model.push(data.pop());
-			}
-		}
-	};
+    for(var i = 0, j = blocks.length; i < j; i++) {
+      if(data.length) {
+        blocks[i].model.push(data.pop());
+      }
+    }
+  };
 
   MultiBlock.flattenData = function(data, target) {
     var target = target || []; 
